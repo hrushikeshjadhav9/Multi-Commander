@@ -10,7 +10,7 @@ from keras.layers import Dense
 from keras.optimizers import Adam
 import keras.backend.tensorflow_backend as KTF
 import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
+#tf.disable_v2_behavior()
 import os
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
