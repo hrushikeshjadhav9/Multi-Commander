@@ -69,7 +69,7 @@ class DQNAgent: # Blueprint of DQN Agent.
     def __init__(self, config): # Initializing attributes of the agent.
         self.state_size = config['state_size'] # Dimension of state vector.
         self.action_size = config['action_size'] # Dimension of action vector.
-        aelf.memory = deque(maxlen=3000) # Queue to store (s,a,_s,r) experience\ tuples.
+        self.memory = deque(maxlen=3000) # Queue to store (s,a,_s,r) experience\ tuples.
         self.gamma = 0.95 # Discounting rate.
         self.epsilon = 1 # Probability that agent exploits current knowledge.
         self.epsilon_min = 0.001 # epsilon shouldn't fall below 0.1 after decaying.
