@@ -37,7 +37,7 @@ class ModifiedTensorBoard(TensorBoard):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.step = 1
-        self.writer = tf.summary.FileWriter(self.log_dir)
+        self.writer = tf.contrib.summary.FileWriter(self.log_dir)
 
     # Overriding this method to stop creating default log writer
     def set_model(self, model):
