@@ -10,7 +10,7 @@ import numpy as np
 class CityFlowEnv(object):
 
     def __init__(self, config):
-        self.eng = cityflow.Engine(config['cityflow_config_file'], 'thread_num'=config['thread_num'])
+        self.eng = cityflow.Engine(config['cityflow_config_file'], thread_num=config['thread_num'])
         self.config = config
         self.num_step = config['num_step']
         self.state_size = len(config['lane_phase_info'][config['intersection_id']]['start_lane']) + 1 # Check
