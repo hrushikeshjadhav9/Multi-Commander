@@ -33,8 +33,6 @@ def main():
     parser.add_argument('--batch_size', type=int, default=30, help='batchsize for training')
     parser.add_argument('--phase_step', type=int, default=3, help='time of one phase')
 
-def main():
-
     args = parser.parse_args()
 
     # preparing config
