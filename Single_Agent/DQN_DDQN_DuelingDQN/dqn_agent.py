@@ -8,7 +8,8 @@ from collections import deque # To build a queue for storing experience of agent
 from keras.models import Sequential # To build a DNN
 from keras.layers import Dense # Layers in the DNN
 from keras.optimizers import Adam # Gradient descent algorithm
-import tensorflow.compat.v1 as tf
+# import tensorflow.compat.v1 as tf
+import tensorflow as tf
 import os # To interact with the OS
 
 from keras.callbacks import TensorBoard # New
@@ -23,8 +24,8 @@ Sessions are gone in TensorFlow 2.
 There is one global runtime in the background that executes all computation,
 whether run eagerly or as a compiled tf.function.
 """
-tf.compat.v1.keras.backend.set_session(tf.Session(config=tf.ConfigProto(\
-device_count={'gpu':0})))
+# tf.compat.v1.keras.backend.set_session(tf.Session(config=tf.ConfigProto(\
+# device_count={'gpu':0})))
 
 
 MODEL_NAME = '2x256'
@@ -37,7 +38,9 @@ class ModifiedTensorBoard(TensorBoard):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.step = 1
-        self.writer = tf.contrib.summary.FileWriter(self.log_dir)
+        # self.writer = tf.summary.FileWriter(self.log_dir)
+        # self.writer = tf.contrib.summary.FileWriter(self.log_dir)
+        self.writer = tf.summary.create_file_writer(self.log_dir) # New
 
     # Overriding this method to stop creating default log writer
     def set_model(self, model):
@@ -60,7 +63,8 @@ class ModifiedTensorBoard(TensorBoard):
     # Custom method for saving own metrics
     # Creates writer, writes custom metrics and closes writer
     def update_stats(self, **stats):
-        self._write_logs(stats, self.step)
+        # self._write_logs(stats, self.step)
+        tf.summary.scalar('stats',stats, step=self.step) # New
 
 
 
