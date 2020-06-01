@@ -9,12 +9,14 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 import keras.backend.tensorflow_backend as KTF
-import tensorflow.compat.v1 as tf
+# import tensorflow.compat.v1 as tf
+import tensorflow as tf
 #tf.disable_v2_behavior()
 import os
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
-tf.compat.v1.keras.backend.set_session(tf.Session(config=tf.ConfigProto(device_count={'gpu':0})))
+# tf.compat.v1.keras.backend.set_session(tf.Session(config=tf.ConfigProto(device_count={'gpu':0})))
+tf.keras.backend.set_session(tf.Session(config=tf.ConfigProto(device_count={'gpu':0})))
 
 class DQNAgent:
     def __init__(self, config):
