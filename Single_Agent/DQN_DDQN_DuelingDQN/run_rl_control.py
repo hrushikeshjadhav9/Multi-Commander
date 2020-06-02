@@ -16,7 +16,7 @@ from duelingDQN import DuelingDQNAgent
 from keras.callbacks import TensorBoard # New
 
 #  Stats settings
-AGGREGATE_STATS_EVERY = 50  # episodes
+AGGREGATE_STATS_EVERY = 1  # episodes
 
 def main():
     logging.getLogger().setLevel(logging.INFO)
