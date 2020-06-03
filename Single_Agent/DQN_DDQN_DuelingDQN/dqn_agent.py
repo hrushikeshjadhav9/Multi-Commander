@@ -97,8 +97,7 @@ class DQNAgent: # Blueprint of DQN Agent.
         function which helps in our use case.
         """
         model = Sequential()
-        # model.add(Dense(40, input_shape = (self.batch_size, self.state_size), activation='relu'))
-        model.add(Dense(40, input_shape = self.state_size, activation='relu'))
+        model.add(Dense(40, input_dim=self.state_size, activation='relu'))
         model.add(Dense(40, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
@@ -123,20 +122,21 @@ class DQNAgent: # Blueprint of DQN Agent.
 
     def replay(self, terminal_state): # Trains target DNN from experiences of online DNN.
         minibatch = random.sample(self.memory, self.batch_size) # Form a minibatch to learn from.
-        X = []
-        Y = []
+        # X = []
+        # Y = []
         for state, action, reward, next_state in minibatch:
             # Why target_model is used for prediction here and online model is used for prediction underneath
             target = (reward + self.gamma * np.amax(self.target_model.predict(next_state)[0])) # new_q
             target_f = self.model.predict(state) # current_qs_list
             target_f[0][action] = target
-            X.append(state)
-            Y.append(target_f)
+            # X.append(state)
+            # Y.append(target_f)
 
         # Fit on all samples as one batch, log only on terminal state.
         # Call tensorboard on reaching terminal state.
         # dim(X) : (30, 1, 9)
-        self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
+            self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
+            # self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
         # self.model.fit(state, target_f, epochs=10, verbose=0)
 
     def load(self, name):
@@ -153,17 +153,18 @@ class DDQNAgent(DQNAgent):
 
     def replay(self, terminal_state):
         minibatch = random.sample(self.memory, self.batch_size)
-        X = []
-        Y = []
+        # X = []
+        # Y = []
         for state, action, reward, next_state in minibatch:
             target_f = self.model.predict(state)
             actions_for_next_state = np.argmax(self.model.predict(next_state)[0])
             target = (reward + self.gamma * self.target_model.predict(next_state)[0][actions_for_next_state])
             target_f[0][action] = target
-            X.append(state)
-            Y.append(target_f)
+            # X.append(state)
+            # Y.append(target_f)
             # self.model.fit(state, target_f, epochs=1, verbose=0)
-        self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
+            self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
+            # self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
