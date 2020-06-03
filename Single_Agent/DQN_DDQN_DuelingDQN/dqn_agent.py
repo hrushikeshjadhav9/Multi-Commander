@@ -97,7 +97,7 @@ class DQNAgent: # Blueprint of DQN Agent.
         function which helps in our use case.
         """
         model = Sequential()
-        model.add(Dense(40, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(40, input_dim = (self.batch_size, self.state_size), activation='relu'))
         model.add(Dense(40, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
@@ -134,6 +134,7 @@ class DQNAgent: # Blueprint of DQN Agent.
 
         # Fit on all samples as one batch, log only on terminal state.
         # Call tensorboard on reaching terminal state.
+        # dim(X) : (30, 1, 9)
         self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
         # self.model.fit(state, target_f, epochs=10, verbose=0)
 
