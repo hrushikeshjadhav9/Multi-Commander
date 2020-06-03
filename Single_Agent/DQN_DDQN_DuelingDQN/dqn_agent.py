@@ -97,7 +97,8 @@ class DQNAgent: # Blueprint of DQN Agent.
         function which helps in our use case.
         """
         model = Sequential()
-        model.add(Dense(40, input_shape = (self.batch_size, self.state_size), activation='relu'))
+        # model.add(Dense(40, input_shape = (self.batch_size, self.state_size), activation='relu'))
+        model.add(Dense(40, input_shape = (1, self.state_size), activation='relu'))
         model.add(Dense(40, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
