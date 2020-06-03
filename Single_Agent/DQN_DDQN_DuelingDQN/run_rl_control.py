@@ -219,8 +219,7 @@ def main():
             state = next_state
 
             # logging
-            logging.info("step:{}/{}, action:{}, reward:{}"
-                            .format(i+1, args.num_step, action, reward))
+            logging.info("step:{}/{}, action:{}, reward:{}".format(i+1, args.num_step, action, reward))
 
         df = pd.DataFrame({"scores": scores})
         df.to_csv(result_dir + '/scores.csv', index=None)
