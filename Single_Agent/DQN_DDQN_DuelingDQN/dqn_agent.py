@@ -64,8 +64,8 @@ class ModifiedTensorBoard(TensorBoard):
     # Creates writer, writes custom metrics and closes writer
     def update_stats(self, **stats):
         # self._write_logs(stats, self.step)
-        tf.summary.scalar('loss',stats['loss'], step=self.step) # New
-
+        # tf.summary.scalar('loss',stats['loss'], step=self.step) # New
+        tf.summary.scalar('reward_avg',stats['reward_avg'], step=self.step) # New
 
 
 
