@@ -12,7 +12,7 @@ from keras.optimizers import Adam # Gradient descent algorithm
 import tensorflow as tf
 import os # To interact with the OS
 
-from keras.callbacks import TensorBoard # New
+from tf.keras.callbacks import TensorBoard # New
 import time
 
 # os.environ is a python dictionary containing keys as environment variables
@@ -26,9 +26,6 @@ whether run eagerly or as a compiled tf.function.
 """
 # tf.compat.v1.keras.backend.set_session(tf.Session(config=tf.ConfigProto(\
 # device_count={'gpu':0})))
-
-
-MODEL_NAME = '2x256'
 
 
 # Own Tensorboard class
@@ -88,7 +85,7 @@ class DQNAgent: # Blueprint of DQN Agent.
         self.phase_list = config['lane_phase_info'][intersection_id]['phase']
 
         # Custom tensorboard object
-        self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}-{}".format(MODEL_NAME, int(time.time())))
+        self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}".format(int(time.time())))
 
     def _build_model(self):
         """
@@ -152,7 +149,7 @@ class DDQNAgent(DQNAgent):
     def __init__(self, config):
         super(DDQNAgent, self).__init__(config)
 
-    def replay(self):
+    def replay(self, terminal_state):
         minibatch = random.sample(self.memory, self.batch_size)
         X = []
         Y = []
