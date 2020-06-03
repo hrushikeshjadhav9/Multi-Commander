@@ -12,7 +12,7 @@ from keras.optimizers import Adam # Gradient descent algorithm
 import tensorflow as tf
 import os # To interact with the OS
 
-from tf.keras.callbacks import TensorBoard # New
+from tensorflow.keras.callbacks import TensorBoard # New
 import time
 
 # os.environ is a python dictionary containing keys as environment variables
