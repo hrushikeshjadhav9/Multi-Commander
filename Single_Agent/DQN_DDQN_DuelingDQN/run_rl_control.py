@@ -168,7 +168,7 @@ def main():
 
                     # Save model, but only when min reward is greater or equal a set value
                     # if min_reward >= MIN_REWARD:
-                    agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
+                    # agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
 
                 print("score: {}, mean reward:{}".format(episode_score, episode_reward/args.num_step))
 
