@@ -156,7 +156,7 @@ class DDQNAgent(DQNAgent):
         for state, action, reward, next_state in minibatch:
             target_f = self.model.predict(state)
             actions_for_next_state = np.argmax(self.model.predict(next_state)[0])
-            target = (reward + self.gamma * self.target_model.predict(mext_state)[0][actions_for_next_state])
+            target = (reward + self.gamma * self.target_model.predict(next_state)[0][actions_for_next_state])
             target_f[0][action] = target
             X.append(state)
             Y.append(target_f)
