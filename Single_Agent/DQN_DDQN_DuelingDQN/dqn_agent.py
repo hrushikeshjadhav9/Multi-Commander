@@ -91,7 +91,7 @@ class DQNAgent: # Blueprint of DQN Agent.
         act_values = self.model.predict(state) # Finds Q values for all actions in a state.
         return np.argmax(act_values[0]) # returns action corresponding to maximum Q value.
 
-    def replay(self, terminal_state): # Trains target DNN from experiences of online DNN.
+    def replay(self): # Trains target DNN from experiences of online DNN.
         minibatch = random.sample(self.memory, self.batch_size) # Form a minibatch to learn from.
         # X = []
         # Y = []
@@ -123,7 +123,7 @@ class DDQNAgent(DQNAgent):
     def __init__(self, config):
         super(DDQNAgent, self).__init__(config)
 
-    def replay(self, terminal_state):
+    def replay(self):
         minibatch = random.sample(self.memory, self.batch_size)
         # X = []
         # Y = []
