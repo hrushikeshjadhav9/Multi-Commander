@@ -12,7 +12,7 @@ from keras.optimizers import Adam # Gradient descent algorithm
 import tensorflow as tf
 import os # To interact with the OS
 
-from tensorflow.keras.callbacks import TensorBoard # New
+# from tensorflow.keras.callbacks import TensorBoard # New
 import time
 
 # os.environ is a python dictionary containing keys as environment variables
@@ -28,41 +28,12 @@ whether run eagerly or as a compiled tf.function.
 # device_count={'gpu':0})))
 
 
-# Own Tensorboard class
-class ModifiedTensorBoard(TensorBoard):
 
-    # Overriding init to set initial step and writer (we want one log file for all .fit() calls)
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.step = 1
-        # self.writer = tf.summary.FileWriter(self.log_dir)
-        # self.writer = tf.contrib.summary.FileWriter(self.log_dir)
-        self.writer = tf.summary.create_file_writer(self.log_dir) # New
 
-    # Overriding this method to stop creating default log writer
-    def set_model(self, model):
-        pass
 
-    # Overrided, saves logs with our step number
-    # (otherwise every .fit() will start writing from 0th step)
-    def on_epoch_end(self, epoch, logs=None):
-        self.update_stats(**logs)
 
-    # Overrided
-    # We train for one batch only, no need to save anything at epoch end
-    def on_batch_end(self, batch, logs=None):
-        pass
 
-    # Overrided, so won't close writer
-    def on_train_end(self, _):
-        pass
 
-    # Custom method for saving own metrics
-    # Creates writer, writes custom metrics and closes writer
-    def update_stats(self, **stats):
-        # self._write_logs(stats, self.step)
-        # tf.summary.scalar('loss',stats['loss'], step=self.step) # New
-        tf.summary.scalar('reward_avg',stats['reward_avg'], step=self.step) # New
 
 
 
@@ -85,7 +56,7 @@ class DQNAgent: # Blueprint of DQN Agent.
         self.phase_list = config['lane_phase_info'][intersection_id]['phase']
 
         # Custom tensorboard object
-        self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}".format(int(time.time())))
+        # self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}".format(int(time.time())))
 
     def _build_model(self):
         """
@@ -135,7 +106,8 @@ class DQNAgent: # Blueprint of DQN Agent.
         # Fit on all samples as one batch, log only on terminal state.
         # Call tensorboard on reaching terminal state.
         # dim(X) : (30, 1, 9)
-            self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
+            self.model.fit(state, target_f, epochs=10, verbose=0)
+            # self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
             # self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
         # self.model.fit(state, target_f, epochs=10, verbose=0)
 
@@ -163,7 +135,8 @@ class DDQNAgent(DQNAgent):
             # X.append(state)
             # Y.append(target_f)
             # self.model.fit(state, target_f, epochs=1, verbose=0)
-            self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
+            self.model.fit(state, target_f, epochs=1, verbose=0) # train on single sample
+            # self.model.fit(state, target_f, epochs=10, verbose=0, callbacks=[self.tensorboard] if terminal_state else None)
             # self.model.fit(np.array(X)/255, np.array(Y), batch_size=self.batch_size, epochs=10, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
 
         if self.epsilon > self.epsilon_min:
